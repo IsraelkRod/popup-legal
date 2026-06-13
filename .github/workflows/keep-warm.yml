@@ -1,0 +1,29 @@
+# Keep the POP UP backend awake.
+#
+# Render's free tier sleeps a service after 15 minutes of no traffic; the next
+# request then pays a 30-60s cold start (an App Store reviewer would just see a
+# loading screen). This scheduled job pings the public health endpoint so the
+# service stays warm. It lives in this PUBLIC repo on purpose: public repos get
+# unlimited free GitHub Actions minutes, and the job only curls a public URL
+# (no secrets, no code from the private app repo).
+name: keep-backend-warm
+
+on:
+  schedule:
+    # Every 5 minutes (best-effort; GitHub may delay scheduled runs under load).
+    - cron: "*/5 * * * *"
+  workflow_dispatch: {}   # allow manual "Run workflow" from the Actions tab
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping health endpoint
+        run: |
+          URL="https://popup-backend-r217.onrender.com/api/health"
+          # Ping a few times spaced ~70s apart to smooth over schedule gaps.
+          for i in 1 2 3; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 90 "$URL" || echo "000")
+            echo "ping $i -> HTTP $code"
+            if [ "$i" -lt 3 ]; then sleep 70; fi
+          done
