@@ -1,0 +1,9 @@
+# Plaintext homepage source — NEVER commit (repo is public). Edit this, then
+# rebuild the encrypted index.html with: node build-gate.mjs "<access-code>"
+homepage.src.html
+
+# Confidential app screenshots — inlined into the encrypted index.html, never
+# served as standalone public files.
+assets/app-*.png
+
+.DS_Store
