@@ -1,12 +1,330 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8">
+<html lang="en">
+<head>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pop Up — Legal</title>
-<style>body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;max-width:640px;margin:0 auto;padding:48px 20px;line-height:1.6;color:#1c1c1e}a{color:#007aff;display:block;margin:12px 0;font-size:1.1rem}@media(prefers-color-scheme:dark){body{background:#1c1c1e;color:#e5e5ea}}</style>
-</head><body>
-<h1>Pop Up</h1>
-<p>Legal documents for the Pop Up mobile app.</p>
-<a href="./privacy/">Privacy Policy</a>
-<a href="./terms/">Terms of Service</a>
-<p style="color:#8e8e93;font-size:.9rem;margin-top:32px">Contact: support@popupanalytics.app</p>
-</body></html>
+<title>Pop Up — The map for the pop-up economy</title>
+<meta name="description" content="Pop Up is the map for the pop-up economy. Find pop-up markets near you, apply in a tap, run your event, and see the data after. Join the beta.">
+<meta property="og:title" content="Pop Up — The map for the pop-up economy">
+<meta property="og:description" content="Find pop-ups near you, apply in a tap, run your event, see the data after. Join the beta.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://popupanalytics.app/">
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --surface: #f5f5f7;
+    --card: #ffffff;
+    --text: #1c1c1e;
+    --muted: #6b6b70;
+    --border: #e3e3e8;
+    --tint: #007aff;
+    --tint-press: #0062cc;
+    --accent: #e84a68;
+    --ok: #1c8a3c;
+    --radius: 16px;
+    --max: 920px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #000000;
+      --surface: #121214;
+      --card: #1c1c1e;
+      --text: #f2f2f7;
+      --muted: #9a9aa0;
+      --border: #2c2c2e;
+      --tint: #0a84ff;
+      --tint-press: #409cff;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--tint); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 20px; }
+
+  /* Hero */
+  header.hero { text-align: center; padding: 84px 20px 56px; }
+  .brand { font-size: 1.05rem; font-weight: 700; letter-spacing: .02em; color: var(--muted); text-transform: uppercase; }
+  h1 { font-size: clamp(2.1rem, 6vw, 3.4rem); line-height: 1.08; margin: 14px 0 16px; letter-spacing: -.02em; }
+  .lede { font-size: clamp(1.05rem, 2.4vw, 1.3rem); color: var(--muted); max-width: 640px; margin: 0 auto 28px; }
+  .cta {
+    display: inline-block; background: var(--tint); color: #fff; font-weight: 600;
+    padding: 14px 26px; border-radius: 999px; font-size: 1.05rem;
+  }
+  .cta:hover { background: var(--tint-press); text-decoration: none; }
+  .cta.secondary { background: transparent; color: var(--tint); border: 1px solid var(--border); margin-left: 8px; }
+
+  /* Sections */
+  section { padding: 40px 0; }
+  h2 { font-size: clamp(1.5rem, 3.5vw, 2rem); letter-spacing: -.01em; margin: 0 0 8px; text-align: center; }
+  .sub { color: var(--muted); text-align: center; max-width: 620px; margin: 0 auto 32px; }
+
+  .grid { display: grid; gap: 16px; grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 22px;
+  }
+  .card .ico { font-size: 1.6rem; }
+  .card h3 { margin: 10px 0 6px; font-size: 1.15rem; }
+  .card p { margin: 0; color: var(--muted); font-size: .98rem; }
+
+  /* Audience pills */
+  .pills { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+  .pill { background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 8px 16px; font-size: .95rem; }
+
+  /* Form */
+  .formwrap { background: var(--surface); border-radius: 24px; padding: 8px; margin-top: 8px; }
+  form { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 24px; }
+  .row { display: grid; gap: 16px; grid-template-columns: 1fr 1fr; }
+  @media (max-width: 620px) { .row { grid-template-columns: 1fr; } }
+  .field { margin-bottom: 16px; }
+  label { display: block; font-size: .9rem; font-weight: 600; margin-bottom: 6px; }
+  label .req { color: var(--accent); }
+  input, select, textarea {
+    width: 100%; padding: 12px 14px; font-size: 1rem; font-family: inherit;
+    background: var(--bg); color: var(--text);
+    border: 1px solid var(--border); border-radius: 12px; outline: none;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--tint); }
+  textarea { resize: vertical; min-height: 84px; }
+  .hint { color: var(--muted); font-size: .85rem; margin-top: 6px; }
+  button.submit {
+    width: 100%; background: var(--tint); color: #fff; font-weight: 600; font-size: 1.05rem;
+    border: 0; padding: 15px; border-radius: 12px; cursor: pointer; margin-top: 6px;
+  }
+  button.submit:hover { background: var(--tint-press); }
+  button.submit:disabled { opacity: .6; cursor: default; }
+  .status { margin-top: 14px; padding: 12px 14px; border-radius: 12px; font-size: .95rem; display: none; }
+  .status.show { display: block; }
+  .status.ok { background: rgba(28,138,60,.12); color: var(--ok); border: 1px solid rgba(28,138,60,.3); }
+  .status.err { background: rgba(232,74,104,.12); color: var(--accent); border: 1px solid rgba(232,74,104,.3); }
+
+  footer { border-top: 1px solid var(--border); margin-top: 40px; padding: 28px 20px 56px; text-align: center; color: var(--muted); font-size: .9rem; }
+  footer a { margin: 0 10px; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="brand">Pop Up</div>
+    <h1>The map for the pop-up&nbsp;economy.</h1>
+    <p class="lede">Find pop-up markets near you, apply in a tap, run your event, and see the
+      data after. One place for hosts, vendors, and the people who shop them.</p>
+    <a class="cta" href="#beta">Join the beta</a>
+    <a class="cta secondary" href="#how">See how it works</a>
+  </div>
+</header>
+
+<section id="how">
+  <div class="wrap">
+    <h2>Discover → Pipeline → Data</h2>
+    <p class="sub">Pop Up takes a pop-up from "where is it?" all the way to "how did it do?"</p>
+    <div class="grid">
+      <div class="card">
+        <div class="ico">🗺️</div>
+        <h3>Discover</h3>
+        <p>A live map of what's happening near you — markets, minor retail, and flash pop-ups, with the vendors who'll be there.</p>
+      </div>
+      <div class="card">
+        <div class="ico">⚡</div>
+        <h3>Apply &amp; run</h3>
+        <p>Vendors apply in a tap when they meet a project's standard. Hosts review, build a roster, and run event day from one place.</p>
+      </div>
+      <div class="card">
+        <div class="ico">📊</div>
+        <h3>See the data</h3>
+        <p>Connect your POS and watch sales, top sellers, and market performance after the event — not guesswork.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Built for everyone at the market</h2>
+    <p class="sub">Pick how you'll use it — every account grows with you.</p>
+    <div class="pills">
+      <span class="pill">🎪 Hosts &amp; organizers — launch events, manage your vendor roster</span>
+      <span class="pill">🧺 Vendors &amp; makers — find pop-ups and apply</span>
+      <span class="pill">🛍️ Shoppers — see what's popping up near you</span>
+    </div>
+  </div>
+</section>
+
+<section id="beta">
+  <div class="wrap" style="max-width:640px">
+    <h2>Join the beta</h2>
+    <p class="sub">We're onboarding early testers in San Antonio and beyond. Tell us a bit about
+      you and we'll send a TestFlight invite.</p>
+
+    <div class="formwrap">
+      <form id="beta-form" novalidate>
+        <div class="field">
+          <label for="name">Your name <span class="req">*</span></label>
+          <input id="name" name="name" type="text" maxlength="120" autocomplete="name" required>
+        </div>
+
+        <div class="field">
+          <label for="orgOrHandle">Business name or social handle</label>
+          <input id="orgOrHandle" name="orgOrHandle" type="text" maxlength="120" placeholder="Alamo Makers Market / @alamomakersmkt">
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="persona">I'm a… <span class="req">*</span></label>
+            <select id="persona" name="persona" required>
+              <option value="" disabled selected>Choose one</option>
+              <option value="host">Host / organizer</option>
+              <option value="vendor">Vendor / maker</option>
+              <option value="both">Both</option>
+              <option value="explorer">Shopper / explorer</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="eventFrequency">How often are your events? <span class="req">*</span></label>
+            <select id="eventFrequency" name="eventFrequency" required>
+              <option value="" disabled selected>Choose one</option>
+              <option value="one-off">One-off (single event)</option>
+              <option value="occasional">Occasional (less than monthly)</option>
+              <option value="monthly">Monthly</option>
+              <option value="weekly">Weekly</option>
+              <option value="continuous">Continuous / daily</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="city">City</label>
+            <input id="city" name="city" type="text" maxlength="120" placeholder="San Antonio">
+          </div>
+          <div class="field">
+            <label for="region">State / region</label>
+            <input id="region" name="region" type="text" maxlength="120" placeholder="TX">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="contactEmail">Email</label>
+            <input id="contactEmail" name="contactEmail" type="email" maxlength="200" autocomplete="email" placeholder="you@example.com">
+          </div>
+          <div class="field">
+            <label for="contactInstagram">Instagram</label>
+            <input id="contactInstagram" name="contactInstagram" type="text" maxlength="120" placeholder="@yourhandle">
+          </div>
+        </div>
+        <p class="hint" style="margin-top:-6px;margin-bottom:16px">Give us at least one way to reach you.</p>
+
+        <div class="field">
+          <label for="notes">Anything else? (optional)</label>
+          <textarea id="notes" name="notes" maxlength="2000" placeholder="What do you sell or organize? What would make Pop Up a win for you?"></textarea>
+        </div>
+
+        <button class="submit" type="submit" id="submit-btn">Request my invite</button>
+        <div class="status" id="status" role="status" aria-live="polite"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a href="./privacy/">Privacy</a>
+    <a href="./terms/">Terms</a>
+    <a href="./support/">Support</a>
+    <a href="mailto:support@popupanalytics.app">Contact</a>
+    <p style="margin-top:14px">© <span id="year"></span> Pop Up · San Antonio, TX</p>
+  </div>
+</footer>
+
+<script>
+  // Public beta-intake endpoint (NestJS backend on Render). Posts JSON; the
+  // backend derives the use-case segment and forwards to Slack.
+  var API_URL = "https://popup-backend-r217.onrender.com/api/beta-signup";
+  var SUPPORT_EMAIL = "support@popupanalytics.app";
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  var form = document.getElementById("beta-form");
+  var btn = document.getElementById("submit-btn");
+  var statusEl = document.getElementById("status");
+
+  function showStatus(kind, msg) {
+    statusEl.className = "status show " + kind;
+    statusEl.innerHTML = msg;
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    statusEl.className = "status";
+
+    var data = {
+      name: form.name.value.trim(),
+      orgOrHandle: form.orgOrHandle.value.trim() || undefined,
+      persona: form.persona.value || undefined,
+      eventFrequency: form.eventFrequency.value || undefined,
+      city: form.city.value.trim() || undefined,
+      region: form.region.value.trim() || undefined,
+      contactEmail: form.contactEmail.value.trim() || undefined,
+      contactInstagram: form.contactInstagram.value.trim() || undefined,
+      notes: form.notes.value.trim() || undefined
+    };
+
+    if (!data.name || !data.persona || !data.eventFrequency) {
+      showStatus("err", "Please fill in your name, role, and event frequency.");
+      return;
+    }
+    if (!data.contactEmail && !data.contactInstagram) {
+      showStatus("err", "Add an email or Instagram handle so we can send your invite.");
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = "Sending…";
+
+    fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    })
+      .then(function (res) {
+        return res.json().then(function (body) { return { ok: res.ok, status: res.status, body: body }; });
+      })
+      .then(function (r) {
+        if (r.ok) {
+          form.reset();
+          showStatus("ok", "🎉 You're on the list! We'll reach out with a TestFlight invite soon.");
+        } else {
+          var msg = (r.body && r.body.message) || "Something went wrong.";
+          if (Array.isArray(msg)) msg = msg.join(" ");
+          showStatus("err", msg + ' Or email us at <a href="mailto:' + SUPPORT_EMAIL + '">' + SUPPORT_EMAIL + "</a>.");
+        }
+      })
+      .catch(function () {
+        // Network/CORS error — fall back to email so a signup is never lost.
+        var subject = encodeURIComponent("Pop Up beta signup");
+        var lines = Object.keys(data).filter(function (k) { return data[k]; })
+          .map(function (k) { return k + ": " + data[k]; }).join("\n");
+        var href = "mailto:" + SUPPORT_EMAIL + "?subject=" + subject + "&body=" + encodeURIComponent(lines);
+        showStatus("err", 'We couldn\'t submit just now. <a href="' + href + '">Tap here to email us your details</a> instead.');
+      })
+      .finally(function () {
+        btn.disabled = false;
+        btn.textContent = "Request my invite";
+      });
+  });
+</script>
+</body>
+</html>
