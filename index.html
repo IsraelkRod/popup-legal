@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pop Up — The local market economy, on one map</title>
-<meta name="description" content="Pop Up reconnects the local market economy — shoppers, vendors, and organizers — using real sales data. Markets are scored by the products actually sold, not foot traffic, so vendors can vet an event before they commit. Join the San Antonio beta.">
-<meta property="og:title" content="Pop Up — The local market economy, on one map">
-<meta property="og:description" content="Shoppers find local makers, vendors find customers, organizers fill events — matched by real sales data, not guesswork. Join the beta.">
+<title>Pop Up: the local market economy on one map</title>
+<meta name="description" content="Pop Up reconnects the local market economy. Shoppers find local makers, vendors find customers, and organizers fill events, all matched by real sales data. Markets are scored by what actually sells, not foot traffic, so vendors can vet an event before they commit. Join the San Antonio beta.">
+<meta property="og:title" content="Pop Up: the local market economy on one map">
+<meta property="og:description" content="Shoppers find local makers, vendors find customers, organizers fill events, matched by real sales data. Join the beta.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://popupanalytics.app/">
 <meta property="og:image" content="https://popupanalytics.app/assets/popup-logo.png">
@@ -16,7 +16,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    /* Brand palette — from the POPUP logo */
+    /* Brand palette from the POPUP logo */
     --purple: #9B51E0;
     --yellow: #FFD60A;
     --pink:   #F4256A;
@@ -30,7 +30,7 @@
     --radius: 20px;
     --shadow: 5px 5px 0 var(--ink);
     --shadow-sm: 3px 3px 0 var(--ink);
-    /* frosted glass — translucent fill + soft depth (still keeps the brand outline) */
+    /* frosted glass: translucent fill with soft depth, keeps the brand outline */
     --glass: rgba(255,255,255,.5);
     --glass-soft: rgba(255,255,255,.62);
     --glass-shadow: 4px 4px 0 rgba(16,15,20,.16), 0 16px 34px rgba(16,15,20,.12);
@@ -54,8 +54,21 @@
   h1, h2, h3, .display { font-family: "Baloo 2", "Nunito", sans-serif; font-weight: 800; letter-spacing: .01em; }
   a { color: var(--ink); }
 
+  /* ---- Language switcher ---- */
+  .langbar {
+    position: fixed; top: 12px; right: 12px; z-index: 50; display: flex;
+    border: 2.5px solid var(--ink); border-radius: 999px; overflow: hidden;
+    box-shadow: var(--shadow-sm); background: var(--card);
+  }
+  .langbtn {
+    font-family: "Baloo 2", sans-serif; font-weight: 800; font-size: .85rem;
+    border: none; background: transparent; color: var(--ink); padding: 7px 14px; cursor: pointer;
+  }
+  .langbtn + .langbtn { border-left: 2.5px solid var(--ink); }
+  .langbtn.is-active { background: var(--ink); color: #fff; }
+
   /* ---- Hero ---- */
-  header.hero { text-align: center; padding: 46px 22px 22px; }
+  header.hero { text-align: center; padding: 56px 22px 22px; }
   .logo { width: min(420px, 80%); height: auto; display: block; margin: 0 auto 6px;
           filter: drop-shadow(0 8px 18px rgba(16,15,20,.18)); }
   .eyebrow {
@@ -85,7 +98,7 @@
   h2 { font-size: clamp(1.6rem, 4vw, 2.1rem); text-align: center; margin: 0 0 4px; }
   .sub { color: var(--muted); text-align: center; margin: 0 auto 28px; font-weight: 700; max-width: 600px; }
 
-  /* ---- The problem (three sides that can't find each other) ---- */
+  /* ---- The problem: three sides that can't find each other ---- */
   .problem .grid { display: grid; gap: 18px; grid-template-columns: repeat(3, 1fr); }
   @media (max-width: 760px){ .problem .grid { grid-template-columns: 1fr; } }
   .pcard {
@@ -116,7 +129,7 @@
   .wedge p { color: var(--text); font-weight: 700; max-width: 620px; margin: 0 auto; font-size: clamp(1rem, 2.2vw, 1.15rem); }
   .wedge .strike { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--pink); text-decoration-thickness: 2px; }
 
-  /* how-it-works cards */
+  /* how it works cards */
   .grid { display: grid; gap: 18px; grid-template-columns: repeat(3, 1fr); }
   @media (max-width: 760px){ .grid { grid-template-columns: 1fr; } }
   .card {
@@ -138,7 +151,7 @@
   .card h3 { margin: 0 0 4px; font-size: 1.2rem; }
   .card p { margin: 0; color: var(--muted); font-weight: 600; }
 
-  /* ---- App peek (real screenshots in phone frames) ---- */
+  /* ---- App peek: real screenshots in phone frames ---- */
   .peek { background:
       linear-gradient(180deg, rgba(155,81,224,.12), rgba(74,157,232,.12));
     -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
@@ -240,39 +253,44 @@
 </head>
 <body>
 
+<div class="langbar" role="group" aria-label="Language / Idioma">
+  <button type="button" class="langbtn" data-lang="en" aria-pressed="true">EN</button>
+  <button type="button" class="langbtn" data-lang="es" aria-pressed="false">ES</button>
+</div>
+
 <header class="hero">
   <div class="wrap">
     <img class="logo" src="./assets/popup-logo.png" alt="Pop Up">
-    <span class="eyebrow">Now in beta · San Antonio, TX</span>
-    <h1>The local market economy can't find itself.</h1>
-    <p class="lede">Shoppers miss the makers next door. Vendors spend real money chasing the wrong crowds. Organizers scramble to fill events. <b>Pop Up reconnects all three — with real sales data.</b></p>
+    <span class="eyebrow" data-i18n="hero_eyebrow">Now in beta · San Antonio, TX</span>
+    <h1 data-i18n="hero_h1">The local market economy can't find itself.</h1>
+    <p class="lede" data-i18n="hero_lede">Shoppers miss the makers next door. Vendors spend real money chasing the wrong crowds. Organizers scramble to fill events. <b>Pop Up reconnects all three, using real sales data.</b></p>
     <div class="cta-row">
-      <a class="btn primary" href="#beta">Join the beta</a>
-      <a class="btn" href="#how">See how it works</a>
+      <a class="btn primary" href="#beta" data-i18n="cta_join">Join the beta</a>
+      <a class="btn" href="#how" data-i18n="cta_how">See how it works</a>
     </div>
   </div>
 </header>
 
 <section id="problem" class="problem">
   <div class="wrap">
-    <h2>Three sides that can't find each other</h2>
-    <p class="sub">The pop-up economy runs on texts, DMs, and spreadsheets. Everyone's guessing.</p>
+    <h2 data-i18n="prob_h2">Three sides that can't find each other</h2>
+    <p class="sub" data-i18n="prob_sub">The pop-up economy runs on texts, DMs, and spreadsheets. Everyone is guessing.</p>
     <div class="grid">
       <div class="pcard">
         <span class="emoji">🛍️</span>
-        <p class="who">Shoppers</p>
-        <p>can't easily find locally-made products or know what's popping up nearby this weekend.</p>
+        <p class="who" data-i18n="prob_shop_t">Shoppers</p>
+        <p data-i18n="prob_shop_d">can't easily find local products or know what is popping up nearby this weekend.</p>
       </div>
       <div class="pcard hurt">
-        <span class="tag">Hurts most</span>
+        <span class="tag" data-i18n="prob_vend_tag">Hurts most</span>
         <span class="emoji">🧺</span>
-        <p class="who">Vendors</p>
-        <p>spend real time and money to reach customers — applying with maximum effort and zero certainty it'll pay off.</p>
+        <p class="who" data-i18n="prob_vend_t">Vendors</p>
+        <p data-i18n="prob_vend_d">spend real time and money to reach customers, putting in full effort with no certainty it will pay off.</p>
       </div>
       <div class="pcard">
         <span class="emoji">🎪</span>
-        <p class="who">Organizers</p>
-        <p>find it a hassle to source good vendors and fill events with the right mix.</p>
+        <p class="who" data-i18n="prob_org_t">Organizers</p>
+        <p data-i18n="prob_org_d">find it a hassle to line up good vendors and fill events with the right mix.</p>
       </div>
     </div>
   </div>
@@ -280,80 +298,80 @@
 
 <section id="wedge" class="wedge">
   <div class="wrap">
-    <h2>Markets scored by what <span class="big">actually sells</span>.</h2>
-    <p>Not turnout. <span class="strike">Not foot traffic.</span> The products people actually bought — so a vendor can <b>vet a market before</b> they ever commit their time and money.</p>
+    <h2 data-i18n="wedge_h2">Markets scored by what <span class="big">actually sells</span>.</h2>
+    <p data-i18n="wedge_p">Not turnout. <span class="strike">Not foot traffic.</span> The products people actually bought, so a vendor can <b>vet a market before</b> spending their time and money.</p>
   </div>
 </section>
 
 <section id="how">
   <div class="wrap">
-    <h2>From the map to the numbers</h2>
-    <p class="sub">Tap a card to see what it does.</p>
+    <h2 data-i18n="how_h2">From the map to the numbers</h2>
+    <p class="sub" data-i18n="how_sub">Tap a card to see what it does.</p>
     <div class="grid">
       <div class="card" role="button" tabindex="0" aria-expanded="false">
         <span class="more" aria-hidden="true">+</span>
         <div class="chip">🗺️</div>
-        <h3>Discover</h3>
-        <p>Live pop-ups near you, on a map.</p>
+        <h3 data-i18n="c1_t">Discover</h3>
+        <p data-i18n="c1_d">Live pop-ups near you, on a map.</p>
         <ul class="caps">
-          <li>Markets, minor retail &amp; flash pop-ups</li>
-          <li>Filter by category &amp; distance</li>
-          <li>See who's vending before you go</li>
+          <li data-i18n="c1_a">Markets, minor retail, and flash pop-ups</li>
+          <li data-i18n="c1_b">Filter by category and distance</li>
+          <li data-i18n="c1_c">See who is vending before you go</li>
         </ul>
       </div>
       <div class="card" role="button" tabindex="0" aria-expanded="false">
         <span class="more" aria-hidden="true">+</span>
         <div class="chip">⚡</div>
-        <h3>Easy apply</h3>
-        <p>One tap when you meet a market's standard.</p>
+        <h3 data-i18n="c2_t">Easy apply</h3>
+        <p data-i18n="c2_d">One tap when you meet a market's standard.</p>
         <ul class="caps">
-          <li>One-tap apply when you qualify</li>
-          <li>A clear checklist when you don't</li>
-          <li>Permits &amp; attestations saved once, reused</li>
+          <li data-i18n="c2_a">Apply in one tap when you qualify</li>
+          <li data-i18n="c2_b">A clear checklist when you don't</li>
+          <li data-i18n="c2_c">Permits and attestations saved once, reused everywhere</li>
         </ul>
       </div>
       <div class="card" role="button" tabindex="0" aria-expanded="false">
         <span class="more" aria-hidden="true">+</span>
         <div class="chip">🧩</div>
-        <h3>Rosters &amp; booths</h3>
-        <p>Approve vendors, assign booths, run event day.</p>
+        <h3 data-i18n="c3_t">Rosters and booths</h3>
+        <p data-i18n="c3_d">Approve vendors, assign booths, run event day.</p>
         <ul class="caps">
-          <li>Review applicants with fit signals</li>
-          <li>Approve &amp; build your roster</li>
-          <li>Assign booths and check vendors in</li>
+          <li data-i18n="c3_a">Review applicants with fit signals</li>
+          <li data-i18n="c3_b">Approve and build your roster</li>
+          <li data-i18n="c3_c">Assign booths and check vendors in</li>
         </ul>
       </div>
       <div class="card" role="button" tabindex="0" aria-expanded="false">
         <span class="more" aria-hidden="true">+</span>
         <div class="chip">🔌</div>
-        <h3>POS sync</h3>
-        <p>Square sales flow in live.</p>
+        <h3 data-i18n="c4_t">POS sync</h3>
+        <p data-i18n="c4_d">Square sales flow in live.</p>
         <ul class="caps">
-          <li>Connect Square in a tap</li>
-          <li>Sales sync in real time</li>
-          <li>Line items matched to your catalog</li>
+          <li data-i18n="c4_a">Connect Square in a tap</li>
+          <li data-i18n="c4_b">Sales sync in real time</li>
+          <li data-i18n="c4_c">Line items matched to your catalog</li>
         </ul>
       </div>
       <div class="card" role="button" tabindex="0" aria-expanded="false">
         <span class="more" aria-hidden="true">+</span>
         <div class="chip">📊</div>
-        <h3>Sold-product intelligence</h3>
-        <p>What sold, top sellers, AOV, market trends.</p>
+        <h3 data-i18n="c5_t">Sales intelligence</h3>
+        <p data-i18n="c5_d">What sold, top sellers, average order, market trends.</p>
         <ul class="caps">
-          <li>Revenue &amp; average order value</li>
-          <li>Top sellers &amp; product performance</li>
-          <li>Compare markets, live during the event</li>
+          <li data-i18n="c5_a">Revenue and average order value</li>
+          <li data-i18n="c5_b">Top sellers and product performance</li>
+          <li data-i18n="c5_c">Compare markets, live during the event</li>
         </ul>
       </div>
       <div class="card" role="button" tabindex="0" aria-expanded="false">
         <span class="more" aria-hidden="true">+</span>
         <div class="chip">💸</div>
-        <h3>Earnings &amp; fees</h3>
-        <p>Tracked per event and per vendor, automatically.</p>
+        <h3 data-i18n="c6_t">Earnings and fees</h3>
+        <p data-i18n="c6_d">Tracked per event and per vendor, automatically.</p>
         <ul class="caps">
-          <li>Processing-fee &amp; booth-fee shares</li>
-          <li>Per-event and per-vendor breakdown</li>
-          <li>Your net, tracked automatically</li>
+          <li data-i18n="c6_a">Processing fee and booth fee shares</li>
+          <li data-i18n="c6_b">Breakdown by event and by vendor</li>
+          <li data-i18n="c6_c">Your net, tracked automatically</li>
         </ul>
       </div>
     </div>
@@ -362,20 +380,20 @@
 
 <section id="peek" class="peek">
   <div class="wrap">
-    <h2>A peek inside</h2>
-    <p class="sub">It's all cards.</p>
+    <h2 data-i18n="peek_h2">A peek inside</h2>
+    <p class="sub" data-i18n="peek_sub">It's all cards.</p>
     <div class="shots">
       <div class="shotwrap">
-        <div class="shot"><img src="./assets/app-projects.png" alt="Pop Up app — your projects" loading="lazy"></div>
-        <p class="cap">Your projects</p>
+        <div class="shot"><img src="./assets/app-projects.png" alt="Pop Up app, your projects" loading="lazy"></div>
+        <p class="cap" data-i18n="cap_projects">Your projects</p>
       </div>
       <div class="shotwrap">
-        <div class="shot"><img src="./assets/app-calendar.png" alt="Pop Up app — your calendar" loading="lazy"></div>
-        <p class="cap">Your calendar</p>
+        <div class="shot"><img src="./assets/app-calendar.png" alt="Pop Up app, your calendar" loading="lazy"></div>
+        <p class="cap" data-i18n="cap_calendar">Your calendar</p>
       </div>
       <div class="shotwrap">
-        <div class="shot"><img src="./assets/app-earnings.png" alt="Pop Up app — your earnings" loading="lazy"></div>
-        <p class="cap">Your earnings</p>
+        <div class="shot"><img src="./assets/app-earnings.png" alt="Pop Up app, your earnings" loading="lazy"></div>
+        <p class="cap" data-i18n="cap_earnings">Your earnings</p>
       </div>
     </div>
   </div>
@@ -383,12 +401,12 @@
 
 <section id="who">
   <div class="wrap" style="max-width:640px">
-    <h2>Who's it for?</h2>
-    <p class="sub">Tap to see what you can do.</p>
+    <h2 data-i18n="who_h2">Who's it for?</h2>
+    <p class="sub" data-i18n="who_sub">Tap to see what you can do.</p>
     <div class="tabs" role="tablist" aria-label="Who Pop Up is for">
-      <button class="pill p1 tab is-active" type="button" data-who="host" aria-pressed="true">🎪 Hosts</button>
-      <button class="pill p2 tab" type="button" data-who="vendor" aria-pressed="false">🧺 Vendors</button>
-      <button class="pill p3 tab" type="button" data-who="shopper" aria-pressed="false">🛍️ Shoppers</button>
+      <button class="pill p1 tab is-active" type="button" data-who="host" aria-pressed="true" data-i18n="tab_host">🎪 Hosts</button>
+      <button class="pill p2 tab" type="button" data-who="vendor" aria-pressed="false" data-i18n="tab_vendor">🧺 Vendors</button>
+      <button class="pill p3 tab" type="button" data-who="shopper" aria-pressed="false" data-i18n="tab_shopper">🛍️ Shoppers</button>
     </div>
     <div class="whocard card"><ul id="who-bullets"></ul></div>
   </div>
@@ -396,74 +414,74 @@
 
 <section id="beta">
   <div class="wrap" style="max-width:640px">
-    <h2>Join the beta</h2>
-    <p class="sub">Founding testers in San Antonio &amp; beyond. Tell us who you are — if it's a fit, we'll send a TestFlight invite and your access code.</p>
+    <h2 data-i18n="beta_h2">Join the beta</h2>
+    <p class="sub" data-i18n="beta_sub">Founding testers in San Antonio and beyond. Tell us who you are. If it's a fit, we'll send a TestFlight invite and your access code.</p>
 
     <div class="formcard">
       <form id="beta-form" novalidate>
         <div class="field">
-          <label for="name">Your name <span class="req">*</span></label>
+          <label for="name"><span data-i18n="f_name">Your name</span> <span class="req">*</span></label>
           <input id="name" name="name" type="text" maxlength="120" autocomplete="name" required>
         </div>
 
         <div class="field">
-          <label for="orgOrHandle">Business name or social handle</label>
+          <label for="orgOrHandle" data-i18n="f_org">Business name or social handle</label>
           <input id="orgOrHandle" name="orgOrHandle" type="text" maxlength="120" placeholder="Alamo Makers Market / @alamomakersmkt">
         </div>
 
         <div class="row">
           <div class="field">
-            <label for="persona">I'm a… <span class="req">*</span></label>
+            <label for="persona"><span data-i18n="f_persona">I'm a…</span> <span class="req">*</span></label>
             <select id="persona" name="persona" required>
-              <option value="" disabled selected>Choose one</option>
-              <option value="host">Host / organizer</option>
-              <option value="vendor">Vendor / maker</option>
-              <option value="both">Both</option>
-              <option value="explorer">Shopper / explorer</option>
+              <option value="" disabled selected data-i18n="opt_choose">Choose one</option>
+              <option value="host" data-i18n="opt_host">Host / organizer</option>
+              <option value="vendor" data-i18n="opt_vendor">Vendor / maker</option>
+              <option value="both" data-i18n="opt_both">Both</option>
+              <option value="explorer" data-i18n="opt_explorer">Shopper / explorer</option>
             </select>
           </div>
           <div class="field">
-            <label for="eventFrequency">How often are your events? <span class="req">*</span></label>
+            <label for="eventFrequency"><span data-i18n="f_freq">How often are your events?</span> <span class="req">*</span></label>
             <select id="eventFrequency" name="eventFrequency" required>
-              <option value="" disabled selected>Choose one</option>
-              <option value="one-off">One-off (single event)</option>
-              <option value="occasional">Occasional (less than monthly)</option>
-              <option value="monthly">Monthly</option>
-              <option value="weekly">Weekly</option>
-              <option value="continuous">Continuous / daily</option>
+              <option value="" disabled selected data-i18n="opt_choose">Choose one</option>
+              <option value="one-off" data-i18n="opt_oneoff">One-off (single event)</option>
+              <option value="occasional" data-i18n="opt_occasional">Occasional (less than monthly)</option>
+              <option value="monthly" data-i18n="opt_monthly">Monthly</option>
+              <option value="weekly" data-i18n="opt_weekly">Weekly</option>
+              <option value="continuous" data-i18n="opt_continuous">Continuous / daily</option>
             </select>
           </div>
         </div>
 
         <div class="row">
           <div class="field">
-            <label for="city">City</label>
+            <label for="city" data-i18n="f_city">City</label>
             <input id="city" name="city" type="text" maxlength="120" placeholder="San Antonio">
           </div>
           <div class="field">
-            <label for="region">State / region</label>
+            <label for="region" data-i18n="f_region">State / region</label>
             <input id="region" name="region" type="text" maxlength="120" placeholder="TX">
           </div>
         </div>
 
         <div class="row">
           <div class="field">
-            <label for="contactEmail">Email</label>
-            <input id="contactEmail" name="contactEmail" type="email" maxlength="200" autocomplete="email" placeholder="you@example.com">
+            <label for="contactEmail" data-i18n="f_email">Email</label>
+            <input id="contactEmail" name="contactEmail" type="email" maxlength="200" autocomplete="email" placeholder="you@example.com" data-i18n-ph="ph_email">
           </div>
           <div class="field">
-            <label for="contactInstagram">Instagram</label>
-            <input id="contactInstagram" name="contactInstagram" type="text" maxlength="120" placeholder="@yourhandle">
+            <label for="contactInstagram" data-i18n="f_ig">Instagram</label>
+            <input id="contactInstagram" name="contactInstagram" type="text" maxlength="120" placeholder="@yourhandle" data-i18n-ph="ph_ig">
           </div>
         </div>
-        <p class="hint">Give us at least one way to reach you.</p>
+        <p class="hint" data-i18n="f_hint">Give us at least one way to reach you.</p>
 
         <div class="field">
-          <label for="notes">Anything else? (optional)</label>
-          <textarea id="notes" name="notes" maxlength="2000" placeholder="What do you sell or organize?"></textarea>
+          <label for="notes" data-i18n="f_notes">Anything else? (optional)</label>
+          <textarea id="notes" name="notes" maxlength="2000" placeholder="What do you sell or organize?" data-i18n-ph="ph_notes"></textarea>
         </div>
 
-        <button class="submit" type="submit" id="submit-btn">Request my invite 🎉</button>
+        <button class="submit" type="submit" id="submit-btn" data-i18n="f_submit">Request my invite 🎉</button>
         <div class="status" id="status" role="status" aria-live="polite"></div>
       </form>
     </div>
@@ -472,12 +490,12 @@
 
 <footer>
   <div class="wrap">
-    <a class="tester" href="./beta/">Already a beta tester? Enter here →</a>
+    <a class="tester" href="./beta/" data-i18n="foot_tester">Already a beta tester? Enter here →</a>
     <div class="links">
-      <a href="./privacy/">Privacy</a>
-      <a href="./terms/">Terms</a>
-      <a href="./support/">Support</a>
-      <a href="mailto:support@popupanalytics.app">Contact</a>
+      <a href="./privacy/" data-i18n="foot_privacy">Privacy</a>
+      <a href="./terms/" data-i18n="foot_terms">Terms</a>
+      <a href="./support/" data-i18n="foot_support">Support</a>
+      <a href="mailto:support@popupanalytics.app" data-i18n="foot_contact">Contact</a>
     </div>
     <p class="fine">© <span id="year"></span> Pop Up Analytics LLC · San Antonio, TX</p>
   </div>
@@ -491,7 +509,197 @@
 
   document.getElementById("year").textContent = new Date().getFullYear();
 
-  // Expandable capability cards — tap (or Enter/Space) to reveal bullets.
+  /* ---------------- Language ---------------- */
+  var DICT = {
+    en: {
+      doc_title: "Pop Up: the local market economy on one map",
+      hero_eyebrow: "Now in beta · San Antonio, TX",
+      hero_h1: "The local market economy can't find itself.",
+      hero_lede: "Shoppers miss the makers next door. Vendors spend real money chasing the wrong crowds. Organizers scramble to fill events. <b>Pop Up reconnects all three, using real sales data.</b>",
+      cta_join: "Join the beta",
+      cta_how: "See how it works",
+      prob_h2: "Three sides that can't find each other",
+      prob_sub: "The pop-up economy runs on texts, DMs, and spreadsheets. Everyone is guessing.",
+      prob_shop_t: "Shoppers",
+      prob_shop_d: "can't easily find local products or know what is popping up nearby this weekend.",
+      prob_vend_tag: "Hurts most",
+      prob_vend_t: "Vendors",
+      prob_vend_d: "spend real time and money to reach customers, putting in full effort with no certainty it will pay off.",
+      prob_org_t: "Organizers",
+      prob_org_d: "find it a hassle to line up good vendors and fill events with the right mix.",
+      wedge_h2: "Markets scored by what <span class=\"big\">actually sells</span>.",
+      wedge_p: "Not turnout. <span class=\"strike\">Not foot traffic.</span> The products people actually bought, so a vendor can <b>vet a market before</b> spending their time and money.",
+      how_h2: "From the map to the numbers",
+      how_sub: "Tap a card to see what it does.",
+      c1_t: "Discover", c1_d: "Live pop-ups near you, on a map.",
+      c1_a: "Markets, minor retail, and flash pop-ups", c1_b: "Filter by category and distance", c1_c: "See who is vending before you go",
+      c2_t: "Easy apply", c2_d: "One tap when you meet a market's standard.",
+      c2_a: "Apply in one tap when you qualify", c2_b: "A clear checklist when you don't", c2_c: "Permits and attestations saved once, reused everywhere",
+      c3_t: "Rosters and booths", c3_d: "Approve vendors, assign booths, run event day.",
+      c3_a: "Review applicants with fit signals", c3_b: "Approve and build your roster", c3_c: "Assign booths and check vendors in",
+      c4_t: "POS sync", c4_d: "Square sales flow in live.",
+      c4_a: "Connect Square in a tap", c4_b: "Sales sync in real time", c4_c: "Line items matched to your catalog",
+      c5_t: "Sales intelligence", c5_d: "What sold, top sellers, average order, market trends.",
+      c5_a: "Revenue and average order value", c5_b: "Top sellers and product performance", c5_c: "Compare markets, live during the event",
+      c6_t: "Earnings and fees", c6_d: "Tracked per event and per vendor, automatically.",
+      c6_a: "Processing fee and booth fee shares", c6_b: "Breakdown by event and by vendor", c6_c: "Your net, tracked automatically",
+      peek_h2: "A peek inside", peek_sub: "It's all cards.",
+      cap_projects: "Your projects", cap_calendar: "Your calendar", cap_earnings: "Your earnings",
+      who_h2: "Who's it for?", who_sub: "Tap to see what you can do.",
+      tab_host: "🎪 Hosts", tab_vendor: "🧺 Vendors", tab_shopper: "🛍️ Shoppers",
+      beta_h2: "Join the beta",
+      beta_sub: "Founding testers in San Antonio and beyond. Tell us who you are. If it's a fit, we'll send a TestFlight invite and your access code.",
+      f_name: "Your name", f_org: "Business name or social handle", f_persona: "I'm a…",
+      opt_choose: "Choose one", opt_host: "Host / organizer", opt_vendor: "Vendor / maker", opt_both: "Both", opt_explorer: "Shopper / explorer",
+      f_freq: "How often are your events?",
+      opt_oneoff: "One-off (single event)", opt_occasional: "Occasional (less than monthly)", opt_monthly: "Monthly", opt_weekly: "Weekly", opt_continuous: "Continuous / daily",
+      f_city: "City", f_region: "State / region", f_email: "Email", f_ig: "Instagram",
+      f_hint: "Give us at least one way to reach you.", f_notes: "Anything else? (optional)", f_submit: "Request my invite 🎉",
+      ph_email: "you@example.com", ph_ig: "@yourhandle", ph_notes: "What do you sell or organize?",
+      foot_tester: "Already a beta tester? Enter here →", foot_privacy: "Privacy", foot_terms: "Terms", foot_support: "Support", foot_contact: "Contact",
+      who_host: [
+        "Launch a market, minor retail, or flash pop-up",
+        "Set your application standard and review applicants",
+        "Build a roster, assign booths, run event day",
+        "See what sold, earnings, and fees per event"
+      ],
+      who_vendor: [
+        "Find pop-ups near you on the map",
+        "Vet a market by what actually sells there",
+        "Apply in one tap when you qualify",
+        "Track your sales across every market"
+      ],
+      who_shopper: [
+        "See what is popping up near you",
+        "Browse vendors and what they sell",
+        "Save and follow your favorites",
+        "Get notified before events"
+      ],
+      st_required: "Please fill in your name, role, and event frequency.",
+      st_contact: "Add an email or Instagram handle so we can send your invite.",
+      st_sending: "Sending…",
+      st_success: "🎉 You're on the list! If it's a fit, we'll reach out with a TestFlight invite and your access code.",
+      st_generic: "Something went wrong.",
+      st_or_email: " Or email us at ",
+      st_fail_pre: "We couldn't submit just now. ",
+      st_fail_link: "Tap here to email us your details",
+      st_fail_post: " instead.",
+      mail_subject: "Pop Up beta signup"
+    },
+    es: {
+      doc_title: "Pop Up: la economía local de los mercados en un mapa",
+      hero_eyebrow: "Ahora en beta · San Antonio, TX",
+      hero_h1: "La economía local de los mercados no logra encontrarse.",
+      hero_lede: "Los compradores no encuentran a los creadores que tienen al lado. Los vendedores gastan dinero buscando al público equivocado. Los organizadores batallan para llenar sus eventos. <b>Pop Up vuelve a conectar a los tres con datos reales de ventas.</b>",
+      cta_join: "Únete a la beta",
+      cta_how: "Mira cómo funciona",
+      prob_h2: "Tres lados que no logran encontrarse",
+      prob_sub: "La economía de los pop-ups funciona con mensajes, DMs y hojas de cálculo. Todos andan adivinando.",
+      prob_shop_t: "Compradores",
+      prob_shop_d: "no encuentran fácilmente productos locales ni saben qué pop-ups hay cerca este fin de semana.",
+      prob_vend_tag: "Los más afectados",
+      prob_vend_t: "Vendedores",
+      prob_vend_d: "gastan tiempo y dinero de verdad para llegar a sus clientes, dándolo todo sin la certeza de que valga la pena.",
+      prob_org_t: "Organizadores",
+      prob_org_d: "batallan para conseguir buenos vendedores y llenar sus eventos con la mezcla correcta.",
+      wedge_h2: "Mercados calificados por lo que <span class=\"big\">de verdad se vende</span>.",
+      wedge_p: "No la asistencia. <span class=\"strike\">No el flujo de gente.</span> Los productos que la gente de verdad compró, para que un vendedor pueda <b>evaluar un mercado antes</b> de gastar su tiempo y su dinero.",
+      how_h2: "Del mapa a los números",
+      how_sub: "Toca una tarjeta para ver qué hace.",
+      c1_t: "Descubre", c1_d: "Pop-ups en vivo cerca de ti, en un mapa.",
+      c1_a: "Mercados, retail pequeño y pop-ups exprés", c1_b: "Filtra por categoría y distancia", c1_c: "Mira quién vende antes de ir",
+      c2_t: "Aplica fácil", c2_d: "Un toque cuando cumples con lo que pide el mercado.",
+      c2_a: "Aplica en un toque cuando calificas", c2_b: "Una lista clara cuando todavía no", c2_c: "Permisos y declaraciones guardados una vez y reutilizados en todos lados",
+      c3_t: "Listas y puestos", c3_d: "Aprueba vendedores, asigna puestos y maneja el día del evento.",
+      c3_a: "Revisa a los aplicantes con señales de encaje", c3_b: "Aprueba y arma tu lista", c3_c: "Asigna puestos y registra la entrada de los vendedores",
+      c4_t: "Conexión con tu POS", c4_d: "Las ventas de Square entran en vivo.",
+      c4_a: "Conecta Square en un toque", c4_b: "Las ventas se sincronizan en tiempo real", c4_c: "Cada producto se empareja con tu catálogo",
+      c5_t: "Inteligencia de ventas", c5_d: "Qué se vendió, los más vendidos, el ticket promedio y las tendencias.",
+      c5_a: "Ingresos y ticket promedio", c5_b: "Los más vendidos y el rendimiento por producto", c5_c: "Compara mercados, en vivo durante el evento",
+      c6_t: "Ganancias y comisiones", c6_d: "Registradas por evento y por vendedor, de forma automática.",
+      c6_a: "Comisión de procesamiento y de puesto", c6_b: "Desglose por evento y por vendedor", c6_c: "Tu neto, registrado automáticamente",
+      peek_h2: "Un vistazo por dentro", peek_sub: "Todo son tarjetas.",
+      cap_projects: "Tus proyectos", cap_calendar: "Tu calendario", cap_earnings: "Tus ganancias",
+      who_h2: "¿Para quién es?", who_sub: "Toca para ver lo que puedes hacer.",
+      tab_host: "🎪 Anfitriones", tab_vendor: "🧺 Vendedores", tab_shopper: "🛍️ Compradores",
+      beta_h2: "Únete a la beta",
+      beta_sub: "Testers fundadores en San Antonio y más allá. Cuéntanos quién eres. Si encajas, te enviamos una invitación de TestFlight y tu código de acceso.",
+      f_name: "Tu nombre", f_org: "Nombre del negocio o usuario en redes", f_persona: "Soy…",
+      opt_choose: "Elige una", opt_host: "Anfitrión / organizador", opt_vendor: "Vendedor / creador", opt_both: "Ambos", opt_explorer: "Comprador / explorador",
+      f_freq: "¿Cada cuánto son tus eventos?",
+      opt_oneoff: "Único (un solo evento)", opt_occasional: "Ocasional (menos de una vez al mes)", opt_monthly: "Mensual", opt_weekly: "Semanal", opt_continuous: "Continuo / diario",
+      f_city: "Ciudad", f_region: "Estado o región", f_email: "Correo", f_ig: "Instagram",
+      f_hint: "Déjanos al menos una forma de contactarte.", f_notes: "¿Algo más? (opcional)", f_submit: "Pide mi invitación 🎉",
+      ph_email: "tu@ejemplo.com", ph_ig: "@tuusuario", ph_notes: "¿Qué vendes u organizas?",
+      foot_tester: "¿Ya eres tester? Entra aquí →", foot_privacy: "Privacidad", foot_terms: "Términos", foot_support: "Soporte", foot_contact: "Contacto",
+      who_host: [
+        "Lanza un mercado, retail pequeño o pop-up exprés",
+        "Define tu estándar de aplicación y revisa a los aplicantes",
+        "Arma tu lista, asigna puestos y maneja el día del evento",
+        "Mira qué se vendió, las ganancias y las comisiones por evento"
+      ],
+      who_vendor: [
+        "Encuentra pop-ups cerca de ti en el mapa",
+        "Evalúa un mercado por lo que de verdad se vende ahí",
+        "Aplica en un toque cuando calificas",
+        "Sigue tus ventas en cada mercado"
+      ],
+      who_shopper: [
+        "Mira qué pop-ups hay cerca de ti",
+        "Explora vendedores y lo que venden",
+        "Guarda y sigue tus favoritos",
+        "Recibe avisos antes de los eventos"
+      ],
+      st_required: "Por favor completa tu nombre, tu rol y la frecuencia de tus eventos.",
+      st_contact: "Agrega un correo o un usuario de Instagram para poder enviarte la invitación.",
+      st_sending: "Enviando…",
+      st_success: "🎉 ¡Ya estás en la lista! Si encajas, te contactamos con una invitación de TestFlight y tu código de acceso.",
+      st_generic: "Algo salió mal.",
+      st_or_email: " O escríbenos a ",
+      st_fail_pre: "No pudimos enviarlo en este momento. ",
+      st_fail_link: "Toca aquí para enviarnos tus datos por correo",
+      st_fail_post: ".",
+      mail_subject: "Registro a la beta de Pop Up"
+    }
+  };
+
+  var currentLang = "en";
+
+  var whoBullets = document.getElementById("who-bullets");
+  function renderWho(who) {
+    var list = (DICT[currentLang]["who_" + who]) || DICT.en["who_" + who] || [];
+    whoBullets.innerHTML = list.map(function (b) { return "<li>" + b + "</li>"; }).join("");
+  }
+
+  function applyLang(lang) {
+    if (!DICT[lang]) lang = "en";
+    currentLang = lang;
+    var d = DICT[lang];
+    document.documentElement.lang = lang;
+    document.querySelectorAll("[data-i18n]").forEach(function (el) {
+      var k = el.getAttribute("data-i18n");
+      if (d[k] != null) el.innerHTML = d[k];
+    });
+    document.querySelectorAll("[data-i18n-ph]").forEach(function (el) {
+      var k = el.getAttribute("data-i18n-ph");
+      if (d[k] != null) el.setAttribute("placeholder", d[k]);
+    });
+    if (d.doc_title) document.title = d.doc_title;
+    document.querySelectorAll(".langbtn").forEach(function (b) {
+      var on = b.getAttribute("data-lang") === lang;
+      b.classList.toggle("is-active", on);
+      b.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+    var activeTab = document.querySelector(".tab.is-active");
+    renderWho(activeTab ? activeTab.dataset.who : "host");
+    try { localStorage.setItem("pu_lang", lang); } catch (e) {}
+  }
+
+  document.querySelectorAll(".langbtn").forEach(function (b) {
+    b.addEventListener("click", function () { applyLang(b.getAttribute("data-lang")); });
+  });
+
+  // Expandable capability cards: tap (or Enter/Space) to reveal bullets.
   document.querySelectorAll('.card[role="button"]').forEach(function (card) {
     function toggle() {
       var open = card.classList.toggle("open");
@@ -503,31 +711,7 @@
     });
   });
 
-  // Audience tabs — buttons that reveal what each user can do.
-  var WHO = {
-    host: [
-      "Launch a market, minor-retail, or flash pop-up",
-      "Set your application standard & review applicants",
-      "Build a roster, assign booths, run event day",
-      "See what sold, earnings & fees per event"
-    ],
-    vendor: [
-      "Find pop-ups near you on the map",
-      "Vet a market by what actually sells there",
-      "Apply in one tap when you qualify",
-      "Track your sales across every market"
-    ],
-    shopper: [
-      "See what's popping up near you",
-      "Browse vendors & what they sell",
-      "Save & follow your favorites",
-      "Get notified before events"
-    ]
-  };
-  var whoBullets = document.getElementById("who-bullets");
-  function renderWho(who) {
-    whoBullets.innerHTML = WHO[who].map(function (b) { return "<li>" + b + "</li>"; }).join("");
-  }
+  // Audience tabs: buttons that reveal what each user can do.
   document.querySelectorAll(".tab").forEach(function (tab) {
     tab.addEventListener("click", function () {
       document.querySelectorAll(".tab").forEach(function (t) {
@@ -539,7 +723,15 @@
       renderWho(tab.dataset.who);
     });
   });
-  renderWho("host");
+
+  // Pick the starting language: saved choice, then browser, default English.
+  var startLang = "en";
+  try {
+    var saved = localStorage.getItem("pu_lang");
+    if (saved && DICT[saved]) startLang = saved;
+    else if ((navigator.language || "").toLowerCase().indexOf("es") === 0) startLang = "es";
+  } catch (e) {}
+  applyLang(startLang);
 
   var form = document.getElementById("beta-form");
   var btn = document.getElementById("submit-btn");
@@ -553,6 +745,7 @@
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     statusEl.className = "status";
+    var d = DICT[currentLang];
 
     var data = {
       name: form.name.value.trim(),
@@ -567,16 +760,16 @@
     };
 
     if (!data.name || !data.persona || !data.eventFrequency) {
-      showStatus("err", "Please fill in your name, role, and event frequency.");
+      showStatus("err", d.st_required);
       return;
     }
     if (!data.contactEmail && !data.contactInstagram) {
-      showStatus("err", "Add an email or Instagram handle so we can send your invite.");
+      showStatus("err", d.st_contact);
       return;
     }
 
     btn.disabled = true;
-    btn.textContent = "Sending…";
+    btn.textContent = d.st_sending;
 
     fetch(API_URL, {
       method: "POST",
@@ -589,23 +782,23 @@
       .then(function (r) {
         if (r.ok) {
           form.reset();
-          showStatus("ok", "🎉 You're on the list! If it's a fit, we'll reach out with a TestFlight invite and your access code.");
+          showStatus("ok", d.st_success);
         } else {
-          var msg = (r.body && r.body.message) || "Something went wrong.";
+          var msg = (r.body && r.body.message) || d.st_generic;
           if (Array.isArray(msg)) msg = msg.join(" ");
-          showStatus("err", msg + ' Or email us at <a href="mailto:' + SUPPORT_EMAIL + '">' + SUPPORT_EMAIL + "</a>.");
+          showStatus("err", msg + d.st_or_email + '<a href="mailto:' + SUPPORT_EMAIL + '">' + SUPPORT_EMAIL + "</a>.");
         }
       })
       .catch(function () {
-        var subject = encodeURIComponent("Pop Up beta signup");
+        var subject = encodeURIComponent(d.mail_subject);
         var lines = Object.keys(data).filter(function (k) { return data[k]; })
           .map(function (k) { return k + ": " + data[k]; }).join("\n");
         var href = "mailto:" + SUPPORT_EMAIL + "?subject=" + subject + "&body=" + encodeURIComponent(lines);
-        showStatus("err", 'We couldn\'t submit just now. <a href="' + href + '">Tap here to email us your details</a> instead.');
+        showStatus("err", d.st_fail_pre + '<a href="' + href + '">' + d.st_fail_link + "</a>" + d.st_fail_post);
       })
       .finally(function () {
         btn.disabled = false;
-        btn.textContent = "Request my invite 🎉";
+        btn.textContent = d.f_submit;
       });
   });
 </script>
