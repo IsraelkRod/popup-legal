@@ -1,18 +1,21 @@
 /*
- * build-gate.mjs — turns the plaintext homepage (homepage.src.html) into an
- * encrypted, code-gated index.html for the PUBLIC popup-legal repo.
+ * build-gate.mjs — turns the plaintext Founding Tester Hub (beta-hub.src.html)
+ * into an encrypted, code-gated page at beta/index.html for the PUBLIC repo.
  *
  * Why encrypt (not hide): the repo is public, so any committed plaintext is
- * readable on github.com. We AES-GCM-encrypt the whole homepage — including the
- * confidential app screenshots, inlined as data URIs — so the public repo holds
- * only ciphertext. The access code is the passphrase; without it there is no
- * readable content and no fetchable screenshots.
+ * readable on github.com. We AES-GCM-encrypt the whole tester hub so the public
+ * repo holds only ciphertext. The access code is the passphrase; without it
+ * there is no readable content.
+ *
+ * NOTE (2026-06-18): the marketing homepage (index.html) is now PUBLIC and
+ * committed as plaintext — only the tester hub lives behind this gate. App
+ * screenshots are served from /assets/ (public), so they are no longer inlined
+ * here.
  *
  * Usage:  node build-gate.mjs "<access-code>"
- * Then commit index.html (privacy/terms/support + the public logo stay as-is).
- * Keep homepage.src.html and assets/app-*.png OUT of git (see .gitignore).
+ * Then commit beta/index.html. Keep beta-hub.src.html OUT of git (see .gitignore).
  */
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import crypto from 'node:crypto';
 
 const passphrase = process.argv[2];
@@ -23,13 +26,8 @@ if (!passphrase) {
 
 const ITER = 200000;
 
-// 1) Load plaintext homepage and inline the confidential screenshots as data URIs
-let html = readFileSync(new URL('./homepage.src.html', import.meta.url), 'utf8');
-for (const name of ['app-projects', 'app-calendar', 'app-earnings']) {
-  const b64 = readFileSync(new URL(`./assets/${name}.png`, import.meta.url)).toString('base64');
-  const dataUri = `data:image/png;base64,${b64}`;
-  html = html.split(`./assets/${name}.png`).join(dataUri);
-}
+// 1) Load the plaintext tester hub (assets stay public references — not inlined)
+const html = readFileSync(new URL('./beta-hub.src.html', import.meta.url), 'utf8');
 
 // 2) Encrypt the whole document (AES-256-GCM, key via PBKDF2-SHA256)
 const salt = crypto.randomBytes(16);
@@ -40,7 +38,7 @@ const ct = Buffer.concat([cipher.update(html, 'utf8'), cipher.final()]);
 const tag = cipher.getAuthTag();
 const payload = Buffer.concat([ct, tag]).toString('base64'); // SubtleCrypto wants ct||tag
 
-// 3) Emit the gated index.html (public meta is generic; rich content is encrypted)
+// 3) Emit the gated beta/index.html (public meta is generic; rich content is encrypted)
 const SALT = salt.toString('base64');
 const IV = iv.toString('base64');
 
@@ -49,10 +47,10 @@ const out = `<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pop Up — Private Beta</title>
+<title>Pop Up — Founding Tester Hub</title>
 <meta name="description" content="Pop Up private beta. Enter your access code to continue.">
 <meta name="robots" content="noindex">
-<link rel="icon" href="./assets/popup-logo.png">
+<link rel="icon" href="../assets/popup-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -86,16 +84,16 @@ const out = `<!DOCTYPE html>
 </head>
 <body>
   <div class="gate">
-    <img class="logo" src="./assets/popup-logo.png" alt="Pop Up">
+    <img class="logo" src="../assets/popup-logo.png" alt="Pop Up">
     <div class="card">
-      <h1>Private beta</h1>
-      <p class="sub">Enter your access code to continue.</p>
+      <h1>Founding tester access</h1>
+      <p class="sub">Enter the access code we sent with your invite.</p>
       <form id="g">
         <input id="code" type="password" placeholder="Access code" autocomplete="off" autofocus aria-label="Access code">
         <button id="go" type="submit">Unlock</button>
         <div class="err" id="err">That code didn't work. Check it and try again.</div>
       </form>
-      <div class="foot"><a href="./privacy/">Privacy</a><a href="./terms/">Terms</a><a href="mailto:support@popupanalytics.app">Contact</a></div>
+      <div class="foot"><a href="../">Home</a><a href="../privacy/">Privacy</a><a href="../terms/">Terms</a><a href="mailto:support@popupanalytics.app">Contact</a></div>
     </div>
   </div>
 <script>
@@ -121,5 +119,6 @@ const out = `<!DOCTYPE html>
 </html>
 `;
 
-writeFileSync(new URL('./index.html', import.meta.url), out, 'utf8');
-console.log(`Gated index.html written (${out.length} bytes; payload ${payload.length} b64 chars).`);
+mkdirSync(new URL('./beta/', import.meta.url), { recursive: true });
+writeFileSync(new URL('./beta/index.html', import.meta.url), out, 'utf8');
+console.log(`Gated beta/index.html written (${out.length} bytes; payload ${payload.length} b64 chars).`);

@@ -1,9 +1,12 @@
-# Plaintext homepage source — NEVER commit (repo is public). Edit this, then
-# rebuild the encrypted index.html with: node build-gate.mjs "<access-code>"
+# Plaintext Founding Tester Hub source — NEVER commit (repo is public). Edit this,
+# then rebuild the encrypted page with: node build-gate.mjs "<access-code>"
+beta-hub.src.html
+
+# (Retired) old gated homepage source — replaced by the public index.html. Kept
+# ignored in case a stale copy lingers locally; safe to delete.
 homepage.src.html
 
-# Confidential app screenshots — inlined into the encrypted index.html, never
-# served as standalone public files.
-assets/app-*.png
+# NOTE: app screenshots (assets/app-*.png) are now PUBLIC marketing assets used
+# on the homepage — they are committed on purpose, no longer git-ignored.
 
 .DS_Store
