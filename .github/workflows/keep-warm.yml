@@ -6,24 +6,45 @@
 # service stays warm. It lives in this PUBLIC repo on purpose: public repos get
 # unlimited free GitHub Actions minutes, and the job only curls a public URL
 # (no secrets, no code from the private app repo).
+#
+# WHY ONE LONG RUN INSTEAD OF MANY SHORT ONES:
+# The old version asked for */5 and pinged three times per run. Every run passed,
+# and the backend was still asleep — because GitHub heavily throttles frequent
+# schedules on shared runners. Measured 2026-08-07, the runs landed roughly every
+# 55 MINUTES, not every 5. Three pings covered ~3 minutes of that hour, so the
+# service slept through the other ~50 and real visitors paid the cold start.
+#
+# We can't make GitHub run us more often, so one run now covers the whole gap:
+# it pings every 10 minutes for an hour. Render's 15-minute idle timer never
+# expires, and a green check finally means what it looks like it means.
 name: keep-backend-warm
 
 on:
   schedule:
-    # Every 5 minutes (best-effort; GitHub may delay scheduled runs under load).
-    - cron: "*/5 * * * *"
+    # Asking for twice an hour; GitHub will give what it gives. Whatever lands,
+    # each run stays alive long enough to bridge to the next one.
+    - cron: "0,30 * * * *"
   workflow_dispatch: {}   # allow manual "Run workflow" from the Actions tab
+
+# If a second run starts while one is still pinging, the newer one takes over
+# rather than stacking a duplicate alongside it.
+concurrency:
+  group: keep-backend-warm
+  cancel-in-progress: true
 
 jobs:
   ping:
     runs-on: ubuntu-latest
+    # The job below runs for ~60 minutes by design. This is the guard rail.
+    timeout-minutes: 70
     steps:
-      - name: Ping health endpoint
+      - name: Ping health for the next hour
         run: |
           URL="https://popup-backend-r217.onrender.com/api/health"
-          # Ping a few times spaced ~70s apart to smooth over schedule gaps.
-          for i in 1 2 3; do
+          # 7 pings, 10 minutes apart = ~60 minutes of coverage, comfortably
+          # inside Render's 15-minute idle window at every step.
+          for i in $(seq 1 7); do
             code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 90 "$URL" || echo "000")
-            echo "ping $i -> HTTP $code"
-            if [ "$i" -lt 3 ]; then sleep 70; fi
+            echo "$(date -u +%H:%M:%S)Z  ping $i/7 -> HTTP $code"
+            if [ "$i" -lt 7 ]; then sleep 600; fi
           done
