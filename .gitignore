@@ -10,3 +10,11 @@ homepage.src.html
 # on the homepage — they are committed on purpose, no longer git-ignored.
 
 .DS_Store
+
+# Plaintext site source. The new site is built from here and published as a
+# single self-contained file, so while it is still behind the /preview/ gate
+# this MUST stay out of the public repo. It gets committed at launch.
+src/
+
+# Original full-resolution images. Only the resized copies in assets/ ship.
+assets/raw/
