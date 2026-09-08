@@ -35,10 +35,13 @@ const TARGETS = {
   'coming-soon': { source: 'coming-soon.html', out: 'index.html', encrypt: false },
   'publish': { source: 'site.html', out: 'index.html', encrypt: false },
   'preview': { source: 'site.html', out: 'preview/index.html', encrypt: true },
+  // Plaintext, gitignored, for looking at the real site on a local server
+  // without ever putting it near index.html.
+  'local': { source: 'site.html', out: '.local/index.html', encrypt: false },
 };
 
 if (!TARGETS[target]) {
-  console.error('Usage: node build.mjs <coming-soon|publish|preview> ["<passphrase>"]');
+  console.error('Usage: node build.mjs <coming-soon|local|preview|publish> ["<passphrase>"]');
   process.exit(1);
 }
 const cfg = TARGETS[target];
@@ -63,9 +66,22 @@ html = html.replace(/<!--@include\s+([\w.\-/]+)\s*-->/g, (_, file) => {
 });
 
 // 2) Inline the language dictionary at <!--@i18n-->
+//
+// Only the namespaces THIS page actually uses get inlined. Otherwise the
+// public holding page would ship the entire unreleased site copy in plaintext,
+// which both leaks it and bloats the page.
 const en = JSON.parse(readFileSync(src('i18n/en.json'), 'utf8'));
 const es = JSON.parse(readFileSync(src('i18n/es.json'), 'utf8'));
-html = html.replace('<!--@i18n-->', JSON.stringify({ en, es }));
+
+const rawSource = readFileSync(src(cfg.source), 'utf8');
+const namespaces = new Set();
+for (const m of rawSource.matchAll(/data-i18n="([^".]+)\./g)) namespaces.add(m[1]);
+for (const m of rawSource.matchAll(/lookup\([^,]+,\s*"([^".]+)\./g)) namespaces.add(m[1]);
+
+const pick = (dict) => Object.fromEntries(
+  Object.entries(dict).filter(([ns]) => namespaces.has(ns))
+);
+html = html.replace('<!--@i18n-->', JSON.stringify({ en: pick(en), es: pick(es) }));
 
 /* -------------------------------------------------------------- validate */
 
@@ -84,7 +100,7 @@ const flatten = (obj, prefix = '', out = {}) => {
 const flatEn = flatten(en);
 const flatEs = flatten(es);
 
-const source = readFileSync(src(cfg.source), 'utf8');
+const source = rawSource;
 const used = [...source.matchAll(/data-i18n="([^"]+)"/g)].map((m) => m[1]);
 for (const key of new Set(used)) {
   if (!(key in flatEn)) errors.push(`data-i18n="${key}" is used in the markup but missing from en.json`);
