@@ -1,0 +1,10 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["D33D629X3L.com.popupsatx.app"],
+        "components": [{ "/": "/events/*", "comment": "An event date shared from the app" }]
+      }
+    ]
+  }
+}

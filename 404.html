@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pop Up</title>
+<meta name="robots" content="noindex">
+<meta property="og:title" content="An event on Pop Up">
+<meta property="og:description" content="See the booths, the fees and who the host is looking for.">
+<meta property="og:image" content="https://popupanalytics.app/assets/popup-logo.png">
+<link rel="icon" href="/assets/popup-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Michroma&display=swap" rel="stylesheet">
+<!--
+  Every path the site does not have lands here (GitHub Pages serves 404.html).
+  /events/<id> is a link shared from the app: on an iPhone with Pop Up it opens
+  the app straight away (.well-known/apple-app-site-association) and this page
+  never shows. Everyone else sees the event and two ways in: open the app, or
+  get it from the App Store.
+-->
+<style>
+  :root {
+    --paper: #FFFFFF;
+    --ink: #1A1A1A;
+    --outline: #262626;
+    --muted: #5C6470;
+    --radius-round: 999px;
+    --shadow-card: 0 7px 16px rgba(11, 16, 32, 0.14);
+    --font-display: "Michroma", "Trebuchet MS", sans-serif;
+    --font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+  }
+  main { width: 100%; max-width: 380px; text-align: center; }
+  .logo { width: 160px; height: auto; margin-bottom: 28px; }
+  h1 { font-family: var(--font-display); font-weight: 400; font-size: 24px; line-height: 1.3; margin: 0 0 10px; }
+  .when { font-size: 17px; color: var(--muted); margin: 0 0 32px; min-height: 22px; }
+  .buttons { display: flex; flex-direction: column; gap: 12px; }
+  .button {
+    display: block;
+    min-height: 52px;
+    line-height: 52px;
+    border-radius: var(--radius-round);
+    font-size: 17px;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: var(--shadow-card);
+  }
+  .button.main { background: var(--ink); color: var(--paper); }
+  .button.second { background: var(--paper); color: var(--ink); border: 2px solid var(--outline); line-height: 48px; }
+  .note { font-size: 15px; color: var(--muted); margin: 20px 0 0; line-height: 1.4; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <a href="/"><img class="logo" src="/assets/popup-logo.png" alt="Pop Up"></a>
+
+  <section id="event" hidden>
+    <h1 id="name">An event on Pop Up</h1>
+    <p class="when" id="when"></p>
+    <div class="buttons">
+      <a class="button main" id="open">Open in Pop Up</a>
+      <a class="button second" href="https://apps.apple.com/app/id6779871658">Get Pop Up on the App Store</a>
+    </div>
+    <p class="note">Have the app? Tap Open in Pop Up. New to Pop Up? It's free on the App Store.</p>
+  </section>
+
+  <section id="missing" hidden>
+    <h1>This page isn't here</h1>
+    <p class="when">It may have moved.</p>
+    <div class="buttons"><a class="button second" href="/">Go to Pop Up</a></div>
+  </section>
+</main>
+<script>
+  (function () {
+    var match = location.pathname.match(/^\/events\/([^\/?#]+)/);
+    if (!match) {
+      document.getElementById('missing').hidden = false;
+      return;
+    }
+    var id = decodeURIComponent(match[1]);
+    document.getElementById('event').hidden = false;
+    // The app answers its own popup-analytics:// links, so this opens the same date.
+    document.getElementById('open').href = 'popup-analytics://events/' + encodeURIComponent(id);
+
+    // The event's public card: its name, date and city.
+    fetch('https://popup-backend-r217.onrender.com/api/markets/' + encodeURIComponent(id) + '/detail')
+      .then(function (response) { return response.ok ? response.json() : null; })
+      .then(function (event) {
+        if (!event || !event.name) return;
+        document.getElementById('name').textContent = event.name;
+        document.title = event.name + ' on Pop Up';
+        var parts = [];
+        if (event.startsAt) {
+          parts.push(new Date(event.startsAt).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }));
+        }
+        var place = event.location || event;
+        if (place.city) parts.push(place.region ? place.city + ', ' + place.region : place.city);
+        document.getElementById('when').textContent = parts.join(' · ');
+      })
+      .catch(function () {});
+  })();
+</script>
+</body>
+</html>
