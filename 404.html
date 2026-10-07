@@ -44,6 +44,40 @@
   }
   main { width: 100%; max-width: 380px; text-align: center; }
   .logo { width: 160px; height: auto; margin-bottom: 28px; }
+
+  /* The event's hero card, as the app draws it: the photo fills a portrait
+     card (150 by 188) inside a soft lavender rim, the name sits in a white fade
+     at the bottom, the type chip and the sellers count straddle the top edge. */
+  .hero { position: relative; width: 220px; margin: 18px auto 22px; }
+  .rim {
+    border-radius: 30px;
+    padding: 5px;
+    background: linear-gradient(160deg, #EFEBF8, #D4DCE8 50%, #C8B8E0);
+    box-shadow: var(--shadow-card);
+  }
+  .photo {
+    position: relative;
+    height: 276px;
+    border-radius: 25px;
+    overflow: hidden;
+    background: linear-gradient(160deg, #D4DCE8, #C8B8E0) center / cover no-repeat;
+  }
+  .fade {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 46px 12px 10px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.42) 30%, rgba(255,255,255,0.88) 66%, rgba(255,255,255,0.97));
+  }
+  .card-name { margin: 0; font-weight: 800; font-size: 22px; line-height: 1.15; color: var(--ink); }
+  .chip {
+    position: absolute; top: -12px;
+    padding: 4px 11px;
+    border-radius: var(--radius-round);
+    border: 1.5px solid rgba(255,255,255,0.8);
+    font-size: 13px; font-weight: 800; letter-spacing: 0.6px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+  }
+  .chip.type { left: 16px; color: var(--ink); text-transform: uppercase; }
+  .chip.count { right: 16px; color: #FFFFFF; }
   h1 { font-family: var(--font-display); font-weight: 400; font-size: 24px; line-height: 1.3; margin: 0 0 10px; }
   .when { font-size: 17px; color: var(--muted); margin: 0 0 32px; min-height: 22px; }
   .buttons { display: flex; flex-direction: column; gap: 12px; }
@@ -65,10 +99,17 @@
 </head>
 <body>
 <main>
-  <a href="/"><img class="logo" src="/assets/popup-logo.png" alt="Pop Up"></a>
 
   <section id="event" hidden>
-    <h1 id="name">An event on Pop Up</h1>
+    <div class="hero" aria-hidden="false">
+      <div class="rim">
+        <div class="photo" id="photo">
+          <div class="fade"><h1 class="card-name" id="name">An event on Pop Up</h1></div>
+        </div>
+      </div>
+      <span class="chip type" id="type" hidden></span>
+      <span class="chip count" id="count" hidden></span>
+    </div>
     <p class="when" id="when"></p>
     <div class="buttons">
       <a class="button main" id="open">Open in Pop Up</a>
@@ -78,6 +119,7 @@
   </section>
 
   <section id="missing" hidden>
+    <a href="/"><img class="logo" src="/assets/popup-logo.png" alt="Pop Up"></a>
     <h1>This page isn't here</h1>
     <p class="when">It may have moved.</p>
     <div class="buttons"><a class="button second" href="/">Go to Pop Up</a></div>
@@ -100,8 +142,33 @@
       .then(function (response) { return response.ok ? response.json() : null; })
       .then(function (event) {
         if (!event || !event.name) return;
-        document.getElementById('name').textContent = event.name;
-        document.title = event.name + ' on Pop Up';
+        var card = event.card || {};
+        var name = card.name || event.name;
+        var nameEl = document.getElementById('name');
+        nameEl.textContent = name;
+        document.title = name + ' on Pop Up';
+        // The name wraps onto two lines and steps down in size until it fits,
+        // never ending in "...".
+        for (var size = 22; size > 13 && nameEl.scrollHeight > size * 1.15 * 2 + 2; size -= 1) {
+          nameEl.style.fontSize = size - 1 + 'px';
+        }
+        var image = card.imageUrl || event.imageUrl;
+        if (image) document.getElementById('photo').style.backgroundImage = 'url("' + image.replace(/"/g, '') + '")';
+        var types = { MARKET: ['Market', '#AAEFD3'], MINOR_RETAIL: ['Static', '#FFFF90'], FLASH_POPUP: ['Collab', '#E4D7EA'] };
+        var type = types[card.projectType || event.projectType];
+        if (type) {
+          var typeEl = document.getElementById('type');
+          typeEl.textContent = type[0];
+          typeEl.style.background = type[1];
+          typeEl.hidden = false;
+        }
+        if (typeof card.approvedVendorCount === 'number' && card.vendorCapacity) {
+          var ratio = card.approvedVendorCount / card.vendorCapacity;
+          var countEl = document.getElementById('count');
+          countEl.textContent = card.approvedVendorCount + '/' + card.vendorCapacity;
+          countEl.style.background = ratio >= 1 ? '#E2574C' : ratio >= 0.8 ? '#E8A13C' : '#22C55E';
+          countEl.hidden = false;
+        }
         var parts = [];
         if (event.startsAt) {
           parts.push(new Date(event.startsAt).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }));
